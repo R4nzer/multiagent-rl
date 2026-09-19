@@ -1,29 +1,34 @@
 # Multi-Agent Reinforcement Learning — Delivery Routing
 
-Multi-agent reinforcement learning project using Deep Q-Networks for collaborative package delivery routing.
+Multi-agent reinforcement learning project using tabular Q-learning for collaborative package delivery routing.
 
 ## Overview
 
-This project implements a centralized multi-agent RL system where two agents learn to coordinate package deliveries between locations A and B. The agents use independent Q-learning with centralized training, sharing a common clock and learning simultaneously.
+This project implements a multi-agent RL system on a 5×5 grid where four agents learn to coordinate
+package deliveries between locations A and B. Each agent keeps its own Q-table over the discretized
+joint state and learns independently while sharing a common environment clock.
 
 Key features:
-- **State Representation** — each agent tracks its own position and package status
+- **Tabular Q-Learning** — one Q-table per agent over the joint state (agent positions and delivery phases)
 - **Epsilon-Greedy Exploration** — decaying exploration rate for convergence
-- **Reward Design** — distance guidance, delivery bonuses, collision and stationary penalties
+- **Hybrid Reward Shaping** — movement penalty, stationary penalty, collision penalty, inverse-distance guidance, and delivery bonuses
+- **Collision Detection** — penalties when agents in opposite delivery phases meet outside the goal cells
 - **Centralized Clock with Simultaneous Learning** — shared environment step counter
 
 ## Files
 
 - `Multiagent_RL_Delivery.ipynb` — full project notebook with training, evaluation, and analysis
-- `DeepQ_Skeleton.ipynb` — lightweight skeleton for experimentation
+- `DeepQ_Skeleton.ipynb` — separate exploratory DQN skeleton, not used by the main notebook
 
 ## Getting Started
 
 ```bash
-pip install torch numpy matplotlib
+pip install numpy matplotlib
 jupyter notebook Multiagent_RL_Delivery.ipynb
 ```
 
 ## Results
 
-The trained agents learn efficient delivery strategies, avoiding collisions and minimizing delivery time through coordinated routing.
+Focal-agent evaluation covers 2 delivery maps × 16 start configurations (all 2⁴ phase assignments).
+All four agents reach a 100.00% success rate, where success requires completing the round trip with
+zero collisions.
